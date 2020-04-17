@@ -11,7 +11,7 @@
 
 #include "WinsockServer.h"
 
-WinsockServer::WinsockServer() { srand(static_cast<unsigned int>(time(NULL))); }
+WinsockServer::WinsockServer() {  }
 
 void WinsockServer::Create()
 {
@@ -66,7 +66,7 @@ void WinsockServer::WaitForConnection()
 		newConnection.s = accept(_serverSocket, NULL, NULL);
 
 		//Create a unique identifier for this client
-		newConnection.clientID = rand() % 2000000000;
+		newConnection.clientID = (_connections.size() <= 0 ? 1 : _connections[_connections.size() - 1].clientID + 1);
 
 		std::cout << "New connection with clientID " << newConnection.clientID << std::endl;
 
@@ -121,6 +121,7 @@ void WinsockServer::WaitForMessage(SocketConnection connection)
 		//Store the raw message and the username in the message struct
 		newMessage.messsage = buffer;
 		newMessage.username = connection.username;
+		newMessage.clientID = connection.clientID;
 
 		//Add the message to the message queue
 		_messageQueue.push_back(newMessage);
@@ -133,13 +134,24 @@ std::vector<WinsockServer::Message>* WinsockServer::GetMessageQueue()
 	return &_messageQueue;
 }
 
+std::vector<WinsockServer::SocketConnection> WinsockServer::GetConnectedClients()
+{
+	return _connections;
+}
+
 void WinsockServer::SendToAllClients(std::string message)
 {
 	//Send a message to all active connection
 	for (int i = 0; i < _connections.size(); i++)
 	{
-		send(_connections[i].s, message.c_str(), message.length(), 0);
+		send(_connections[i].s, message.c_str(), static_cast<int>(message.length()), 0);
 	}
+}
+
+void WinsockServer::SendToClient(std::string message, WinsockServer::SocketConnection connection)
+{
+	//Send the message to the specific client
+	send(connection.s, message.c_str(), static_cast<int>(message.length()), 0);
 }
 
 void WinsockServer::StartHearbeatThread()

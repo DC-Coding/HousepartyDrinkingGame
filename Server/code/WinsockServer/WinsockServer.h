@@ -51,6 +51,7 @@ class WinsockServer
 		{
 			std::string username;
 			std::string messsage;
+			unsigned int clientID;
 		};
 
 		WinsockServer();
@@ -71,9 +72,19 @@ class WinsockServer
 		void SendToAllClients(std::string message);
 
 		/*!
+		* @brief Returns a list of the connected clients
+		*/
+		void SendToClient(std::string message, SocketConnection connection);
+
+		/*!
 		* @brief Returns a pointer to the message queue
 		*/
 		std::vector<Message>* GetMessageQueue();
+
+		/*!
+		* @brief Returns a list of the connected clients
+		*/
+		std::vector<SocketConnection> GetConnectedClients();
 
 		/*!
 		* @brief Starts a heartbeat thread which sends a small message after a fixed time to every client
