@@ -14,13 +14,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button btnLogin;
     private EditText etUsername;
     private SharedPreferences sharedPreferences;
+    public static ConnectionAdapter connectionAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (sharedPreferences.getBoolean("saveUsername", true)) {
             etUsername.setText(sharedPreferences.getString("username", ""));
         }
+
+        connectionAdapter = new ConnectionAdapter("coffeecrew.ddns.net", 12345, this, (TextView) findViewById(R.id.tvChallenges));
+        connectionAdapter.connect();
     }
 
     @Override
@@ -59,7 +65,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 new AlertDialog.Builder(this)
                         .setIcon(android.R.drawable.ic_dialog_info)
                         .setTitle("Über uns")
-                        .setMessage("Entwickelt von CoffeeCrew")
+                        .setMessage("Entwickelt von:\nDaniel\nJohanna\nLucas\nMichael")
                         .setNeutralButton("Ok", null)
                         .show();
                 return true;
@@ -80,7 +86,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Toast.makeText(this, "Benutzername ist zu kurz!\n(min. 3 Buchstaben)", Toast.LENGTH_SHORT).show();
                     break;
                 }
-                // insert here the second query (already taken)
+
+                else if (false){
+                    // check if the username is already taken
+                }
+
                 else {
                     Toast.makeText(this, "Dein Benutzername: " + username, Toast.LENGTH_SHORT).show();
 
@@ -89,10 +99,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         sharedPreferences.edit().putString("username", etUsername.getText().toString()).apply();
                     }
 
+                    connectionAdapter.send(username);
+
                     Intent intent = new Intent(this, GameActivity.class);
                     startActivity(intent);
+                    finish();
                     break;
                 }
         }
+    }
+
+    public static ConnectionAdapter getConnectionAdapter() {
+        return connectionAdapter;
     }
 }

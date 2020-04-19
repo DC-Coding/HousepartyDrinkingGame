@@ -61,7 +61,7 @@ public class SettingsActivity extends AppCompatActivity implements CompoundButto
                 new AlertDialog.Builder(this)
                         .setIcon(android.R.drawable.ic_dialog_info)
                         .setTitle("Über uns")
-                        .setMessage("Entwickelt von CoffeeCrew")
+                        .setMessage("Entwickelt von:\nDaniel\nJohanna\nLucas\nMichael")
                         .setNeutralButton("Ok", null)
                         .show();
                 return true;
