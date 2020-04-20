@@ -13,36 +13,51 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Headerdateien\WinsockServer">
-      <UniqueIdentifier>{ea7cbb37-e3a1-47bf-93ab-e5a4c723c87b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\WinsockServer">
-      <UniqueIdentifier>{9f5891d3-3daf-4c3d-ab96-e166895d1f30}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Headerdateien\NetworkProtocol">
       <UniqueIdentifier>{a9da0deb-e060-48ec-8a9f-ec2b75172ad5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Quelldateien\NetworkProtocol">
       <UniqueIdentifier>{8abfb34f-63ee-487b-910b-2baa36bbdf1b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headerdateien\NetworkProtocol\JsonParser">
+      <UniqueIdentifier>{ce506747-1804-409e-829f-935c1324c7ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\NetworkProtocol\JsonParser">
+      <UniqueIdentifier>{10beb0ec-514e-4df9-85b1-cdbfc18e992b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\NetworkProtocol\WinsockServer">
+      <UniqueIdentifier>{9f5891d3-3daf-4c3d-ab96-e166895d1f30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\NetworkProtocol\WinsockServer">
+      <UniqueIdentifier>{ea7cbb37-e3a1-47bf-93ab-e5a4c723c87b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\code\main.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="..\code\WinsockServer\WinsockServer.cpp">
-      <Filter>Quelldateien\WinsockServer</Filter>
-    </ClCompile>
     <ClCompile Include="..\code\NetworkProtocol\NetworkProtocol.cpp">
       <Filter>Quelldateien\NetworkProtocol</Filter>
     </ClCompile>
+    <ClCompile Include="..\code\NetworkProtocol\WinsockServer\WinsockServer.cpp">
+      <Filter>Quelldateien\NetworkProtocol\WinsockServer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\NetworkProtocol\JsonParser\JsonParser.cpp">
+      <Filter>Quelldateien\NetworkProtocol\JsonParser</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\code\WinsockServer\WinsockServer.h">
-      <Filter>Headerdateien\WinsockServer</Filter>
-    </ClInclude>
     <ClInclude Include="..\code\NetworkProtocol\NetworkProtocol.h">
       <Filter>Headerdateien\NetworkProtocol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\NetworkProtocol\WinsockServer\WinsockServer.h">
+      <Filter>Headerdateien\NetworkProtocol\WinsockServer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\NetworkProtocol\JsonParser\JsonParser.h">
+      <Filter>Headerdateien\NetworkProtocol\JsonParser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\NetworkProtocol\JsonParser\json.hpp">
+      <Filter>Headerdateien\NetworkProtocol\JsonParser</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

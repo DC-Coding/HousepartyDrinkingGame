@@ -11,7 +11,7 @@
 
 #include "WinsockServer.h"
 
-WinsockServer::WinsockServer() {  }
+WinsockServer::WinsockServer() { _clientIDCounter = 1; }
 
 void WinsockServer::Create()
 {
@@ -66,7 +66,8 @@ void WinsockServer::WaitForConnection()
 		newConnection.s = accept(_serverSocket, NULL, NULL);
 
 		//Create a unique identifier for this client
-		newConnection.clientID = (_connections.size() <= 0 ? 1 : _connections[_connections.size() - 1].clientID + 1);
+		newConnection.clientID = _clientIDCounter;
+		_clientIDCounter++;
 
 		std::cout << "New connection with clientID " << newConnection.clientID << std::endl;
 

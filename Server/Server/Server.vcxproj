@@ -139,12 +139,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\code\main.cpp" />
+    <ClCompile Include="..\code\NetworkProtocol\JsonParser\JsonParser.cpp" />
     <ClCompile Include="..\code\NetworkProtocol\NetworkProtocol.cpp" />
-    <ClCompile Include="..\code\WinsockServer\WinsockServer.cpp" />
+    <ClCompile Include="..\code\NetworkProtocol\WinsockServer\WinsockServer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\code\NetworkProtocol\JsonParser\json.hpp" />
+    <ClInclude Include="..\code\NetworkProtocol\JsonParser\JsonParser.h" />
     <ClInclude Include="..\code\NetworkProtocol\NetworkProtocol.h" />
-    <ClInclude Include="..\code\WinsockServer\WinsockServer.h" />
+    <ClInclude Include="..\code\NetworkProtocol\WinsockServer\WinsockServer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

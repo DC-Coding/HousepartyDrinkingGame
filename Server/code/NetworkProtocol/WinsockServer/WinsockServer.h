@@ -122,5 +122,10 @@ class WinsockServer
 		* @brief The message queue
 		*/
 		std::vector<Message> _messageQueue;
+
+		/*!
+		* @brief Holds the id's which were already given to clients
+		*/
+		unsigned int _clientIDCounter;
 		
 };

@@ -13,7 +13,8 @@
 #include <fstream>
 #include <string>
 
-#include "..\WinsockServer\WinsockServer.h"
+#include "WinsockServer\WinsockServer.h"
+#include "JsonParser/JsonParser.h"
 
 #define CAT1_PROBABILITY 0.5
 #define CAT2_PROBABILITY 0.5
@@ -46,11 +47,6 @@ class NetworkProtocol
 	private:
 
         /*!
-        * @brief Loads all the application data
-        */
-        void LoadAssets();
-
-        /*!
         * @brief If a new client connects it should be able to participate, so we need to send the current round
         */
         void HandleNewConnections();
@@ -62,9 +58,7 @@ class NetworkProtocol
 
         WinsockServer _winsockServer;
 
-        std::vector<std::string> _cat1;
-        std::vector<std::string> _cat2;
-
-        std::string _currentRound;
+        unsigned int _currentRound;
+        std::vector<JsonObject> _assets;
 
 };

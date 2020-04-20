@@ -16,7 +16,7 @@ int main()
     srand(static_cast<unsigned int>(time(NULL)));
 
     NetworkProtocol protocol = NetworkProtocol();
-    
+
     while (1)
     {
         protocol.Run();

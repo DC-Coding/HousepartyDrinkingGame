@@ -16,7 +16,7 @@ NetworkProtocol::NetworkProtocol()
     _winsockServer.Create();
     _winsockServer.StartConnectionThread();
 
-    this->LoadAssets();
+    _assets = JsonParser::DeserializeJson("Assets\\stringObjects.json");
 
     std::thread Thread(&NetworkProtocol::HandleNewConnections, this);
     Thread.detach();
@@ -27,74 +27,21 @@ void NetworkProtocol::Run()
     std::cout << "Choosing a random string..." << std::endl;
 
     //When a new round starts get a string from the assets
-    int category = rand() % 2;
+    _currentRound = rand() % _assets.size();
 
-    switch (category)
-    {
-        case 0: {
+    //Send the new chosen string to all clients
+    _winsockServer.SendToAllClients(_assets[_currentRound].GetObjectData());
 
-            //Get a string from category 1 
-            _currentRound = _cat1[rand() % _cat1.size()];
-
-            //Send the string to all connected clients
-            _winsockServer.SendToAllClients(_currentRound);
-
-            //Wait for response of all clients
-            this->WaitForClients();
-        }
-              break;
-        case 1: {
-
-            //Get a string from category 2
-            _currentRound = _cat2[rand() % _cat2.size()];
-
-            //Send the string to all connected clients
-            _winsockServer.SendToAllClients(_currentRound);
-
-            //Wait for response of all clients
-            this->WaitForClients();
-        }
-              break;
-    }
+    //Wait for the clients
+    this->WaitForClients();
 }
 
 /* ##################### Private ##################### */
 
-void NetworkProtocol::LoadAssets()
-{
-    std::ifstream read("Assets\\cat1.dat");
-    _cat1.push_back(std::string());
-    while (read.good())
-    {
-        char c = read.get();
-        if (c == '\n')
-        {
-            _cat1.push_back(std::string());
-        }
-        else
-        {
-            _cat1[_cat1.size() - 1].push_back(c);
-        }
-    }
-
-    std::ifstream read2("Assets\\cat2.dat");
-    _cat2.push_back(std::string());
-    while (read2.good())
-    {
-        char c = read2.get();
-        if (c == '\n')
-        {
-            _cat2.push_back(std::string());
-        }
-        else
-        {
-            _cat2[_cat2.size() - 1].push_back(c);
-        }
-    }
-}
-
 void NetworkProtocol::HandleNewConnections()
 {
+    //If new clients connect to the server they should participate to the current round.
+    //So we send them the current string
     unsigned int lastConnected = 0;
 
     while (1)
@@ -102,10 +49,10 @@ void NetworkProtocol::HandleNewConnections()
         std::vector<WinsockServer::SocketConnection> clients = _winsockServer.GetConnectedClients();
         if (clients.size() > 0)
         {
-            if (lastConnected != clients[clients.size() - 1].clientID)
+            if (lastConnected < clients[clients.size() - 1].clientID)
             {
                 //A new client has connected -> send the current round
-                _winsockServer.SendToClient(_currentRound, clients[clients.size() - 1]);
+                _winsockServer.SendToClient(_assets[_currentRound].GetObjectData(), clients[clients.size() - 1]);
                 lastConnected = clients[clients.size() - 1].clientID;
             }
         }
@@ -121,6 +68,7 @@ void NetworkProtocol::WaitForClients()
     std::vector<WinsockServer::SocketConnection> clients = _winsockServer.GetConnectedClients();
     
     //Wait for clients to connect to the server
+    //If no clients are connected to the server yet, we will wait for clients
     while (clients.size() == 0)
     {
         clients = _winsockServer.GetConnectedClients();
@@ -144,7 +92,6 @@ void NetworkProtocol::WaitForClients()
         }
 
         Sleep(500);
-    
     }
 
     std::cout << "Clients are ready!" << std::endl;
