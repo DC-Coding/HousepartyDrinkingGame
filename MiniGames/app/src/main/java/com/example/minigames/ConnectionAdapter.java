@@ -4,8 +4,13 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,6 +27,7 @@ public class ConnectionAdapter {
     private String ip;
     private int port;
     private TextView tvMessages;
+    private Button btnDone, btnChoice1, btnChoice2;
 
     // classes used in ConnectionAdapter
     public class ConnectionStarter extends AsyncTask<Void, Void, Void> {
@@ -118,7 +124,44 @@ public class ConnectionAdapter {
 
             ((GameActivity)context).runOnUiThread(new Runnable() {
                 public void run() {
-                    tvMessages.setText(message);
+                    // enable the buttons
+                    try {
+                        btnDone.setEnabled(true);
+                        btnChoice1.setEnabled(true);
+                        btnChoice2.setEnabled(true);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        JSONObject jsonObject = new JSONObject(message);
+                        if (jsonObject.getString("Category").equals("1")) {
+                            // poll
+                            // make the 2 buttons and the one in the middle visible / invisible
+                            //Log.i("MyInfo", "Category: Abstimmung");
+                            btnDone.setVisibility(View.INVISIBLE);
+                            btnChoice1.setVisibility(View.VISIBLE);
+                            btnChoice2.setVisibility(View.VISIBLE);
+
+                            btnChoice1.setText(jsonObject.getJSONArray("Options").getString(0));
+                            btnChoice2.setText(jsonObject.getJSONArray("Options").getString(1));
+
+                        }
+                        else {
+                            // normal task
+                            //Log.i("MyInfo", "Category: Standard");
+                            btnDone.setVisibility(View.VISIBLE);
+                            btnChoice1.setVisibility(View.INVISIBLE);
+                            btnChoice2.setVisibility(View.INVISIBLE);
+                        }
+
+                        String title = jsonObject.getString("String");
+                        tvMessages.setText(title);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.i("MyInfo", String.valueOf(e));
+                        Toast.makeText(context, "Es ist ein Fehler aufgetreten.", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
 
@@ -161,7 +204,6 @@ public class ConnectionAdapter {
     public void receive() {
 
         // set time limit!!
-        // return the received message / make getLastMessage (new member)
         if (isConnected()) {
             MessageReceiver messageReceiver = new MessageReceiver();
             try {
@@ -179,6 +221,10 @@ public class ConnectionAdapter {
 
     public void setContext(Context context) {
         this.context = context;
+        // add the buttons (new context)
+        this.btnDone = ((GameActivity)context).findViewById(R.id.btnDone);
+        this.btnChoice1 = ((GameActivity)context).findViewById(R.id.btnChoice1);
+        this.btnChoice2 = ((GameActivity)context).findViewById(R.id.btnChoice2);
     }
 
     public void closeConnection() {

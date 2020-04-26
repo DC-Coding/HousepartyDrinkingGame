@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button btnDone;
+    private Button btnDone, btnChoice1, btnChoice2;
     private TextView tvChallenges;
     private ConnectionAdapter connectionAdapter;
 
@@ -27,7 +27,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_game);
 
         btnDone = findViewById(R.id.btnDone);
+        btnChoice1 = findViewById(R.id.btnChoice1);
+        btnChoice2 = findViewById(R.id.btnChoice2);
         btnDone.setOnClickListener(this);
+        btnChoice1.setOnClickListener(this);
+        btnChoice2.setOnClickListener(this);
         tvChallenges = findViewById(R.id.tvChallenges);
 
         connectionAdapter = LoginActivity.getConnectionAdapter();
@@ -40,9 +44,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onBackPressed() {
         // give the user a hint, that the app will be closed
-
         Toast.makeText(this, "Die App wird geschlossen!", Toast.LENGTH_SHORT).show();
 
+        // close the socket and the app
         connectionAdapter.closeConnection();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             finishAndRemoveTask();
@@ -87,7 +91,20 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnDone:
+                btnDone.setEnabled(false);
                 connectionAdapter.send("Done");
+                connectionAdapter.receive();
+                break;
+            case R.id.btnChoice1:
+                btnChoice1.setEnabled(false);
+                btnChoice2.setEnabled(false);
+                connectionAdapter.send("0");
+                connectionAdapter.receive();
+                break;
+            case R.id.btnChoice2:
+                btnChoice1.setEnabled(false);
+                btnChoice2.setEnabled(false);
+                connectionAdapter.send("1");
                 connectionAdapter.receive();
                 break;
         }

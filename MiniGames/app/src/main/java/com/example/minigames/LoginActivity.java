@@ -40,7 +40,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             etUsername.setText(sharedPreferences.getString("username", ""));
         }
 
-        connectionAdapter = new ConnectionAdapter("coffeecrew.ddns.net", 12345, this, (TextView) findViewById(R.id.tvChallenges));
+        connectionAdapter = new ConnectionAdapter("coffeecrew.ddns.net", 12345, this,
+                (TextView) findViewById(R.id.tvChallenges));
         connectionAdapter.connect();
     }
 
