@@ -24,7 +24,7 @@ NetworkProtocol::NetworkProtocol()
 
 void NetworkProtocol::Run()
 {
-    std::cout << "Choosing a random string..." << std::endl;
+    std::cout << "Choosing a random string from " << _assets.size() << "..." << std::endl;
 
     //When a new round starts get a string from the assets
     _currentRound = rand() % _assets.size();
@@ -37,6 +37,12 @@ void NetworkProtocol::Run()
 
     //Now that the round is finished, we can delete the question from the asset list
     _assets.erase(_assets.begin() + _currentRound, _assets.begin() + _currentRound + 1);
+
+    if (_assets.size() == 0)
+    {
+        _assets = JsonParser::DeserializeJson("Assets\\stringObjects.json");
+        std::cout << "Resetting!" << std::endl;
+    }
 }
 
 /* ##################### Private ##################### */
