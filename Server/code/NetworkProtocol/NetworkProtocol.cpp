@@ -34,6 +34,9 @@ void NetworkProtocol::Run()
 
     //Wait for the clients
     this->WaitForClients();
+
+    //Now that the round is finished, we can delete the question from the asset list
+    _assets.erase(_assets.begin() + _currentRound, _assets.begin() + _currentRound + 1);
 }
 
 /* ##################### Private ##################### */

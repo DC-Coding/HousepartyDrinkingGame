@@ -77,6 +77,9 @@ void WinsockServer::WaitForConnection()
 		recv(newConnection.s, buffer, 20, 0);
 		newConnection.username = buffer;
 
+		//Print the username
+		std::cout << "Username: " << buffer << std::endl;
+
 		//Store the new connection in the list
 		_connections.push_back(newConnection);
 
@@ -123,6 +126,8 @@ void WinsockServer::WaitForMessage(SocketConnection connection)
 		newMessage.messsage = buffer;
 		newMessage.username = connection.username;
 		newMessage.clientID = connection.clientID;
+
+		std::cout << "Received message from " << connection.username << ": " << buffer << std::endl;
 
 		//Add the message to the message queue
 		_messageQueue.push_back(newMessage);
